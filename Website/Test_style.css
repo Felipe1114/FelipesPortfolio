@@ -1,0 +1,99 @@
+/* Allgemeine Einstellungen */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #1b2b34;
+    color: #c0c5ce;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header und Navigation */
+header nav {
+    display: flex;
+    gap: 20px;
+    padding: 10px 20px;
+    background-color: #2e3c48;
+}
+
+nav a {
+    text-decoration: none;
+    color: #c0c5ce;
+}
+
+nav a:hover {
+    color: #6699cc;
+}
+
+/* Hauptteil */
+main {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.tabs-container {
+    width: 80%;
+    max-width: 800px;
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.tab {
+    background-color: #34495e;
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.tab:hover {
+    background-color: #5d6d7e;
+}
+
+.tab.active {
+    background-color: #1abc9c;
+}
+
+.code-container {
+    background-color: #2c3e50;
+    border-radius: 10px;
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto; /* Scrollbalken */
+    color: #ecf0f1;
+}
+
+
+
+.code-content pre {
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #2e3c48;
+}
+footer a {
+    text-decoration: none;
+    color: #c0c5ce;
+}
+footer a:hover {
+    color: #6699cc;
+}

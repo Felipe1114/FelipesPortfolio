@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FelipesPortfolio</title>
+  <link rel="stylesheet" href="Test_style.css">
+</head>
+<body>
+  <nav>
+    <a href="index.html">/ Home</a>
+    <a href="Portfolio.html">/ Portfolio</a>
+    <a href="Portfolio_platzahlter.html">/ Projekt X</a>
+  </nav>
+
+  <main>
+    <div class="tabs-container">
+      <div class="tabs">
+        <button class="tab" onclick="showTab('tab1')">Main</button>
+        <button class="tab" onclick="showTab('tab2')">Modul 1</button>
+        <button class="tab" onclick="showTab('tab3')">Modul 2</button>
+      </div>
+      <div class="code-container">
+        <div id="tab1" class="code-content">
+          <pre><code>
+from program_modules import game_logic as gl
+from program_modules import game_menu as gm
+
+# es soll nach jeder runde geprinted werden, welche felder gewählt wurden
+#
+def game_loop(fields):
+    """runns the game, untis winning conditions are """
+    no_winner = True
+    gl.display_grid(fields)
+
+    while no_winner:
+        # wenn es keinen gewinner gibt, hängt das programm bei "set-Pc_fields" fest.
+        # lösung dafür finden.
+        gl.set_player_field(fields)
+        no_winner = gl.determinate_winner(fields)
+
+
+        gl.set_pc_field(fields)
+        no_winner = gl.determinate_winner(fields)
+
+        gl.display_grid(fields)
+
+
+
+def main():
+
+
+    gm.display_menu()
+    while gm.game_beginns():
+        fields = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+        print("new_game\n")
+        game_loop(fields)
+        print("game has ended")
+
+
+if __name__ == "__main__":
+    main()
+          </code></pre>
+        </div>
+        <div id="tab2" class="code-content hidden">
+          <pre><code>
+def game_beginns():
+    """Asks user, if he/she want to start a new game"""
+    while True:
+        try:
+            user_input = input("Do yo want to start a new game?(y/n): ")
+            start_new_game = validade_user_input(user_input)
+
+            return start_new_game
+
+        except ValueError as e:
+            print(e)
+
+
+def validade_user_input(user_input):
+    """if user_input is not 'y' or 'n', ValueError is risen"""
+
+    if user_input == "y":
+        return True
+    elif user_input == "n":
+        return False
+    else:
+        raise ValueError("Please type in 'y' or 'n'")
+
+
+def display_menu():
+    print("======Welcome to TIC TAC TOE======\n"
+          "\t\t\tGame Rules:\n"
+          "You - the Player - chose a field of 1 to 9.\n"
+          "If you do so, the field is set to 'X'\n"
+          "The computer player does the same and sets a 'O'.\n"
+          "If you hav three 'X' in a row, you win.\n"
+          "Same rules for the Pc.\n")
+
+
+
+
+
+          </code></pre>
+        </div>
+        <div id="tab3" class="code-content hidden">
+          <pre><code>
+import random
+PLAYER_TOKEN = "X"
+PC_TOKEN = "O"
+OCCUPIED_FIELDS = [PLAYER_TOKEN, PC_TOKEN]
+WIN_COMBINATIONS = [
+       [0,1,2],
+       [3,4,5],
+       [6,7,8],
+       [0,4,8],
+       [2,4,6],
+       [0,3,6],
+       [1,4,7],
+       [2,5,8]
+    ]
+
+
+def display_grid(fields):
+    grid = (f" {fields[0]} | {fields[1]} | {fields[2]} \n"
+            f"---+---+---\n"
+            f" {fields[3]} | {fields[4]} | {fields[5]} \n"
+            f"---+---+---\n"
+            f" {fields[6]} | {fields[7]} | {fields[8]} \n")
+    print(grid)
+
+
+def set_player_field(fields):
+    """gets user input and sets the chosen Field to PLAYER_TOKEN("W")
+    """
+    user_input = get_user_input(fields)
+
+    fields[user_input - 1] = PLAYER_TOKEN
+
+
+
+def get_user_input(fields):
+    """Gets input from user"""
+    while True:
+        try:
+            user_input = int(input("Wich numbers do you choose?(1-9): "))
+
+            check_input(user_input, fields)
+
+            return user_input
+
+        except ValueError as e:
+            print(e)
+
+
+def check_input(user_input, fields):
+    """Validades Input; checks range, type and, if chosen Field is free"""
+    try:
+        if user_input > 9 or user_input < 0:
+            raise ValueError("Input must be between 1 and 9")
+        elif fields[user_input-1] in OCCUPIED_FIELDS:
+            raise ValueError("Field is blocked, choose a nother")
+    except IndexError as e:
+        print(e)
+
+
+def set_pc_field(fields):
+    """gets a random Field and sets this Field to PC_TOKEN("O")"""
+    rand_choise = get_random_field(fields)
+
+    fields[rand_choise] = PC_TOKEN
+
+
+def get_random_field(fields):
+    """returns a random number; checks, if number is free, else continue """
+    while True:
+        rand_choise = random.randint(0, 8)
+        if field_is_occupied(rand_choise, fields):
+            continue
+        else:
+            break
+    return rand_choise
+
+
+def field_is_occupied(rand_choise, fields):
+    """returns True or False, depending on Field content"""
+    return fields[rand_choise] in OCCUPIED_FIELDS
+
+
+def determinate_winner(fields):
+    """checks if some one has won, ore if no one has won; if so, game ends"""
+    for win_combination in WIN_COMBINATIONS:
+
+        values = [fields[i] for i in win_combination]
+
+        if player_is_winner(values):
+            print("PLAYER has won")
+            return False
+
+        if pc_is_winner(values):
+            print("PC has won")
+            return False
+
+    if no_one_is_winner(fields):
+        print("No one has won")
+        return False
+
+    else:
+        return True
+
+
+def player_is_winner(values):
+    """checks, if Player is winner"""
+    return all(value == "X" for value in values)
+
+
+def pc_is_winner(values):
+    """checks, if Pc is winner"""
+    return all(value == "O" for value in values)
+
+
+def no_one_is_winner(fields):
+    """if all fields are blocked, but no one has three in a row"""
+    return all(value not in fields for value in fields)
+
+
+
+
+
+          </code></pre>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-block">
+      <a href="">Impressum</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
